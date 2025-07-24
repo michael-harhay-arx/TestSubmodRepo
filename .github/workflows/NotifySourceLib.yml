@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           # Read IssueScript.js and escape special chars for GitHub output
-          JS_CODE=$(< ./IssueScript.js)
+          JS_CODE=$(< .github/scripts/IssueScript.js)
           echo "code<<EOF" >> $GITHUB_OUTPUT
           echo "$JS_CODE" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT

@@ -35,5 +35,5 @@ jobs:
       - name: Execute external JS script
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.MAIN_REPO_TOKEN }}
+          github-token: ${{ secrets.PARENT_REPO_TOKEN }}
           script: ${{ steps.load_js.outputs.code }}

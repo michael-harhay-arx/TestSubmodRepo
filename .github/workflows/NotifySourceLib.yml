@@ -16,17 +16,24 @@ jobs:
   notify:
     # The type of runner that the job will run on, can specify windows, other versions of Ubuntu etc.
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./scripts
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Create issue in main repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Load JS into variable
+        id: load_js
+        shell: bash
+        run: |
+          # Read IssueScript.js and escape special chars for GitHub output
+          JS_CODE=$(< ./IssueScript.js)
+          echo "code<<EOF" >> $GITHUB_OUTPUT
+          echo "$JS_CODE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Execute external JS script
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.PARENT_REPO_TOKEN }} # PAT with "repo" on the main repo
-          run: |
-            ./scripts/IssueScript.js
-            
+          github-token: ${{ secrets.MAIN_REPO_TOKEN }}
+          script: ${{ steps.load_js.outputs.code }}
